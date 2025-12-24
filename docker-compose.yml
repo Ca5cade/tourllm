@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  tourism-llm-backend:
+    build: ./backend
+    container_name: tourism-llm-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    volumes:
+      - ./backend/chroma_db:/app/chroma_db # Persist vector DB
+    restart: always
+
+# Frontend service could be added here later if needed
