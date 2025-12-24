@@ -7,7 +7,7 @@ import google.generativeai as genai
 
 load_dotenv()
 
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 class RAGEngine:
     def __init__(self):
@@ -16,9 +16,12 @@ class RAGEngine:
         if not api_key:
              print("WARNING: GOOGLE_API_KEY not found in env.")
 
-        # Use Local Embeddings (Free, runs on CPU, no rate limits)
-        print("Initializing local embeddings (this might take a moment)...")
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        # Use Google Gemini Embeddings (API-based, huge RAM savings)
+        print("Initializing Google Gemini Embeddings...")
+        if not api_key:
+             raise ValueError("GOOGLE_API_KEY is required for Gemini Embeddings.")
+             
+        self.embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
         
         self.vector_store = Chroma(
             collection_name="tourism_tunisia",
@@ -26,7 +29,7 @@ class RAGEngine:
             persist_directory="./chroma_db"
         )
         
-        # Configure Google GenAI directly
+        # Configure Google GenAI directly (for chat)
         if api_key:
             genai.configure(api_key=api_key)
             self.llm = genai.GenerativeModel('gemini-2.5-flash')

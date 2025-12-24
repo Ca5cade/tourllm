@@ -6,11 +6,9 @@ httpx
 python-dotenv
 langchain
 langchain-community
-langchain-huggingface
-langchain-text-splitters
+langchain-google-genai
 chromadb
 google-generativeai
 apscheduler
 yt-dlp
-sentence-transformers
 pydantic
